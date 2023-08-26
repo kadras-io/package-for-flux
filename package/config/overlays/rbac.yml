@@ -1,0 +1,20 @@
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind":"ClusterRole", "metadata":{"name":"crd-controller"}})
+---
+metadata:
+  name: #@ "{}-crd-controller".format("flux")
+
+#@overlay/match by=overlay.subset({"kind":"ClusterRoleBinding", "metadata":{"name":"cluster-reconciler"}})
+---
+metadata:
+  name: #@ "{}-cluster-reconciler".format("flux")
+
+#@overlay/match by=overlay.subset({"kind":"ClusterRoleBinding", "metadata":{"name":"crd-controller"}})
+---
+metadata:
+  name: #@ "{}-crd-controller".format("flux")
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: #@ "{}-crd-controller".format("flux")
