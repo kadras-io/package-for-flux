@@ -1,0 +1,23 @@
+#! The Source Controller is used by the Kadras Engineering Platform
+#! for distributing the source code along the supply chain.
+#! This NetworkPolicy allows components from outside the
+#! flux-system namespace to call the Source Controller.
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/instance: flux-system
+    app.kubernetes.io/part-of: flux
+  name: allow-source-for-supply-chains
+  namespace: flux-system
+spec:
+  ingress:
+  - from:
+    - namespaceSelector: {}
+  podSelector:
+    matchLabels:
+      app: source-controller
+  policyTypes:
+  - Ingress

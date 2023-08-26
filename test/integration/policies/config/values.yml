@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-values
+  namespace: tests
+stringData:
+  values.yaml: |
+    components:
+      kustomize_controller: true
+      helm_controller: true
+      notification_controller: true
+      image_automation_controller: true
+      image_reflector_controller: true
+    policies:
+      include: true

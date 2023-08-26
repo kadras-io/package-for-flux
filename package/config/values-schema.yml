@@ -1,0 +1,39 @@
+#@data/values-schema
+---
+
+#@schema/desc "Settings for which Flux components to deploy besides Source Controller."
+components:
+  #@schema/desc "Whether to deploy the Kustomize Controller."
+  kustomize_controller: false
+  #@schema/desc "Whether to deploy the Helm Controller."
+  helm_controller: false
+  #@schema/desc "Whether to deploy the Notification Controller."
+  notification_controller: false
+  #@schema/desc "Whether to deploy the Image Automation Controller."
+  image_automation_controller: false
+  #@schema/desc "Whether to deploy the Image Reflector Controller."
+  image_reflector_controller: false
+
+#@schema/desc "Settings for the Kyverno policies."
+policies:
+  #@schema/desc "Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation."
+  include: false
+
+#@schema/desc "Settings for logging."
+logging:
+  #@schema/desc "Log verbosity level. Options: `trace`, `debug`, `info`, `error`."
+  #@schema/validation one_of=["trace", "debug", "info", "error"]
+  level: info
+  #@schema/desc "Log encoding format. Options: `console`, `json`."
+  #@schema/validation one_of=["console", "json"]
+  encoding: json
+
+#@schema/desc "Settings for the corporate proxy."
+proxy:
+  #@schema/desc "The HTTPS proxy to use for network traffic."
+  https_proxy: ""
+  #@schema/desc "The HTTP proxy to use for network traffic."
+  http_proxy: ""
+  #@schema/desc "A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use the proxy."
+  #@schema/example ("Allow Flux controllers to talk to each other", ".cluster.local.,.cluster.local,.svc")
+  no_proxy: ""

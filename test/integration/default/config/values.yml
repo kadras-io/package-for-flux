@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-values
+  namespace: tests
+stringData:
+  values.yaml: |
+    # Default values

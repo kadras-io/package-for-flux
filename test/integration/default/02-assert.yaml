@@ -1,0 +1,13 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: podinfo
+status:
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+  - reason: Succeeded
+    status: "True"
+    type: ArtifactInStorage
