@@ -6,9 +6,9 @@ optional_components:
   #@schema/desc "Whether to deploy the Kustomize Controller."
   kustomize_controller: true
   #@schema/desc "Whether to deploy the Helm Controller."
-  helm_controller: true
+  helm_controller: false
   #@schema/desc "Whether to deploy the Notification Controller."
-  notification_controller: true
+  notification_controller: false
   #@schema/desc "Whether to deploy the Image Automation Controller."
   image_automation_controller: false
   #@schema/desc "Whether to deploy the Image Reflector Controller."
