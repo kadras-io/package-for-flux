@@ -6,7 +6,7 @@ metadata:
   namespace: tests
 stringData:
   values.yaml: |
-    components:
+    optional_components:
       kustomize_controller: true
       helm_controller: true
       notification_controller: true
