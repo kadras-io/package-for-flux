@@ -1,14 +1,14 @@
 #@data/values-schema
 ---
 
-#@schema/desc "Settings for which Flux components to deploy besides Source Controller."
-components:
+#@schema/desc "Settings for which Flux optional components to deploy."
+optional_components:
   #@schema/desc "Whether to deploy the Kustomize Controller."
-  kustomize_controller: false
+  kustomize_controller: true
   #@schema/desc "Whether to deploy the Helm Controller."
-  helm_controller: false
+  helm_controller: true
   #@schema/desc "Whether to deploy the Notification Controller."
-  notification_controller: false
+  notification_controller: true
   #@schema/desc "Whether to deploy the Image Automation Controller."
   image_automation_controller: false
   #@schema/desc "Whether to deploy the Image Reflector Controller."

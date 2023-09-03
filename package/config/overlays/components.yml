@@ -1,31 +1,31 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
 
-#@ if/end not data.values.components.kustomize_controller:
+#@ if/end not data.values.optional_components.kustomize_controller:
 
 #@overlay/remove
 #@overlay/match by=overlay.subset({"metadata":{"labels":{"app.kubernetes.io/component": "kustomize-controller"}}}), expects="1+"
 ---
 
-#@ if/end not data.values.components.helm_controller:
+#@ if/end not data.values.optional_components.helm_controller:
 
 #@overlay/remove
 #@overlay/match by=overlay.subset({"metadata":{"labels":{"app.kubernetes.io/component": "helm-controller"}}}), expects="1+"
 ---
 
-#@ if/end not data.values.components.notification_controller:
+#@ if/end not data.values.optional_components.notification_controller:
 
 #@overlay/remove
 #@overlay/match by=overlay.subset({"metadata":{"labels":{"app.kubernetes.io/component": "notification-controller"}}}), expects="1+"
 ---
 
-#@ if/end not data.values.components.image_automation_controller:
+#@ if/end not data.values.optional_components.image_automation_controller:
 
 #@overlay/remove
 #@overlay/match by=overlay.subset({"metadata":{"labels":{"app.kubernetes.io/component": "image-automation-controller"}}}), expects="1+"
 ---
 
-#@ if/end not data.values.components.image_reflector_controller:
+#@ if/end not data.values.optional_components.image_reflector_controller:
 
 #@overlay/remove
 #@overlay/match by=overlay.subset({"metadata":{"labels":{"app.kubernetes.io/component": "image-reflector-controller"}}}), expects="1+"

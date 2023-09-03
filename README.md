@@ -100,11 +100,11 @@ The Flux package has the following configurable properties.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `components.kustomize_controller` | `false` | Whether to deploy the Kustomize Controller. |
-| `components.helm_controller` | `false` | Whether to deploy the Helm Controller. |
-| `components.notification_controller` | `false` | Whether to deploy the Notification Controller. |
-| `components.image_automation_controller` | `false` | Whether to deploy the Image Automation Controller. |
-| `components.image_reflector_controller` | `false` | Whether to deploy the Image Reflector Controller. |
+| `optional_components.kustomize_controller` | `true` | Whether to deploy the Kustomize Controller. |
+| `optional_components.helm_controller` | `true` | Whether to deploy the Helm Controller. |
+| `optional_components.notification_controller` | `true` | Whether to deploy the Notification Controller. |
+| `optional_components.image_automation_controller` | `false` | Whether to deploy the Image Automation Controller. |
+| `optional_components.image_reflector_controller` | `false` | Whether to deploy the Image Reflector Controller. |
 | `policies.include` | `false` | Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation. |
 
 Settings for logging.
@@ -118,8 +118,8 @@ Settings for the corporate proxy.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `proxy.http_proxy` | `""` | The HTTP proxy to use for network traffic. |
 | `proxy.https_proxy` | `""` | The HTTPS proxy to use for network traffic. |
+| `proxy.http_proxy` | `""` | The HTTP proxy to use for network traffic. |
 | `proxy.no_proxy` | `""` | A comma-separated list of hostnames, IP addresses, or IP ranges in CIDR format that should not use the proxy. |
 
 </details>
