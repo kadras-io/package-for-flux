@@ -4,7 +4,7 @@ directories:
   - githubRelease:
       disableAutoChecksumValidation: true
       slug: fluxcd/flux2
-      tag: v2.2.3
+      tag: v2.3.0
     includePaths:
     - install.yaml
     path: .
