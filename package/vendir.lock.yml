@@ -2,8 +2,8 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - githubRelease:
-      tag: v2.3.0
-      url: https://api.github.com/repos/fluxcd/flux2/releases/155514992
+      tag: v2.4.0
+      url: https://api.github.com/repos/fluxcd/flux2/releases/177645414
     path: .
   path: config/upstream
 kind: LockConfig
