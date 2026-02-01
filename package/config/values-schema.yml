@@ -1,6 +1,9 @@
 #@data/values-schema
 ---
 
+#@schema/desc "PEM-encoded certificate data to trust TLS connections with a custom CA."
+ca_cert_data: ""
+
 #@schema/desc "Settings for which Flux optional components to deploy."
 optional_components:
   #@schema/desc "Whether to deploy the Kustomize Controller."

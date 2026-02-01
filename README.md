@@ -12,7 +12,7 @@ A Carvel package for [Flux](https://fluxcd.io), a continuous deployment solution
 
 ### Prerequisites
 
-* Kubernetes 1.32+
+* Kubernetes 1.33+
 * Carvel [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI.
 * Carvel [kapp-controller](https://carvel.dev/kapp-controller) deployed in your Kubernetes cluster. You can install it with Carvel [`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
 
@@ -100,6 +100,7 @@ The Flux package has the following configurable properties.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
+| `ca_cert_data` | `""` | PEM-encoded certificate data to trust TLS connections with a custom CA. |
 | `optional_components.kustomize_controller` | `true` | Whether to deploy the Kustomize Controller. |
 | `optional_components.helm_controller` | `false` | Whether to deploy the Helm Controller. |
 | `optional_components.notification_controller` | `false` | Whether to deploy the Notification Controller. |
