@@ -74,7 +74,7 @@ For documentation specific to Flux, check out [fluxcd.io](https://fluxcd.io/docs
 The Flux package can be customized via a `values.yml` file.
 
   ```yaml
-  components:
+  optional_components:
     kustomize_controller: true
     helm_controller: true
     notification_controller: true
