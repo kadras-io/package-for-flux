@@ -115,6 +115,12 @@ Settings for logging.
 | `logging.level` | `info` | Log verbosity level. Options: `trace`, `debug`, `info`, `error`. |
 | `logging.encoding` | `json` | Log encoding format. Options: `console`, `json`. |
 
+Settings for Prometheus metrics.
+
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `prometheus.enabled` | `true` | Whether to enable the Prometheus annotations for automatic scraping of Flux metrics. |
+
 Settings for the corporate proxy.
 
 | Config | Default | Description |

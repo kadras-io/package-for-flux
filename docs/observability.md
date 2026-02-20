@@ -18,4 +18,11 @@ For more information, check the Flux documentation for [logs](https://fluxcd.io/
 
 The Flux controllers expose Prometheus metrics by default. This package comes pre-configured with the necessary annotations to let Prometheus scrape metrics automatically from the Flux controllers.
 
+If you'd like to remove the Prometheus annotations and therefore disable automatic scraping of Flux metrics, you can apply the following configuration:
+
+```yaml
+prometheus:
+  enabled: false
+```
+
 For more information, check the Flux documentation for [metrics](https://fluxcd.io/flux/monitoring/metrics/) and [custom metrics](https://fluxcd.io/flux/monitoring/custom-metrics/).

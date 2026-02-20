@@ -31,6 +31,11 @@ logging:
   #@schema/validation one_of=["console", "json"]
   encoding: json
 
+#@schema/desc "Settings for Prometheus metrics."
+prometheus:
+  #@schema/desc "Whether to enable the Prometheus annotations for automatic scraping of Flux metrics."
+  enabled: true
+
 #@schema/desc "Settings for the corporate proxy."
 proxy:
   #@schema/desc "The HTTPS proxy to use for network traffic."
