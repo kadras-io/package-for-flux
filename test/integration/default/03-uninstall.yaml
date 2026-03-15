@@ -5,7 +5,7 @@ delete:
   - apiVersion: source.toolkit.fluxcd.io/v1
     kind: GitRepository
     name: podinfo
-  - apiVersion: source.toolkit.fluxcd.io/v1beta2
+  - apiVersion: source.toolkit.fluxcd.io/v1
     kind: OCIRepository
     name: podinfo
 commands:
