@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-ca-certificates
+  namespace: flux-system
+stringData:
+  (starts_with("ca.crt", '-----BEGIN CERTIFICATE-----')): true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: source-controller
+spec:
+  template:
+    spec:
+      (volumes[?name == 'ca-certificates'] | [0].secret.secretName): flux-ca-certificates
+      (containers[?name == 'manager'] | [0]):
+        (env[?name == 'SSL_CERT_DIR'] | [0].value): /etc/ssl/certs-extra
+        (volumeMounts[?name == 'ca-certificates'] | [0].mountPath): /etc/ssl/certs-extra
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helm-controller
+spec:
+  template:
+    spec:
+      (containers[?name == 'manager'] | [0]):
+        (env[?name == 'SSL_CERT_DIR'] | [0].value): /etc/ssl/certs-extra

@@ -1,0 +1,30 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+#@ load("/lib/flux.star", "components", "is_enabled")
+
+#! The source controller is always deployed. The other controllers can be disabled,
+#! removing all their resources: Deployment, Service, ServiceAccount, and CustomResourceDefinitions.
+#! Their ServiceAccounts are also removed from the ClusterRoleBindings shared by all controllers.
+#! See: https://fluxcd.io/flux/installation/configuration/optional-components/
+
+#@ for component in components:
+#@ if not is_enabled(component):
+#@overlay/match by=overlay.subset({"metadata":{"labels":{"app.kubernetes.io/component":component.deployment}}}), expects="1+"
+#@overlay/remove
+---
+
+#@overlay/match by=overlay.subset({"kind":"ClusterRoleBinding"}), expects="1+"
+---
+subjects:
+#@overlay/match by=overlay.subset({"kind":"ServiceAccount", "name":component.deployment}), expects="0+"
+#@overlay/remove
+-
+#@ end
+#@ end
+
+#! The webhooks of the Receivers are served by the notification controller.
+#@ if not data.values.notification_controller.enabled:
+#@overlay/match by=overlay.subset({"kind":"NetworkPolicy", "metadata":{"name":"allow-webhooks"}})
+#@overlay/remove
+---
+#@ end

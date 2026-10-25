@@ -12,7 +12,7 @@ spec:
   packageRef:
     refName: kyverno.packages.kadras.io
     versionSelection:
-      constraints: 1.18.2
+      constraints: 1.19.2
   values:
     - secretRef:
         name: kyverno-values
@@ -25,4 +25,9 @@ metadata:
   namespace: tests
 stringData:
   values.yaml: |
-    # Default
+    background_controller:
+      enabled: false
+    cleanup_controller:
+      enabled: false
+    reports_controller:
+      enabled: false

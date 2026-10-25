@@ -1,0 +1,36 @@
+---
+# The kustomize controller applies the podinfo manifests, and the helm controller installs the podinfo chart,
+# in the namespace of the test, under different names. The step waits for both to be ready.
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: |
+      kubectl apply -n "$NAMESPACE" -f - <<EOF
+      apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: podinfo
+      spec:
+        interval: 10m
+        sourceRef:
+          kind: OCIRepository
+          name: podinfo
+        path: ./
+        targetNamespace: $NAMESPACE
+        prune: true
+        wait: true
+        timeout: 2m
+      ---
+      apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      metadata:
+        name: podinfo-helm
+      spec:
+        interval: 10m
+        chartRef:
+          kind: OCIRepository
+          name: podinfo-chart
+        values:
+          fullnameOverride: podinfo-helm
+      EOF
+  - script: kubectl wait -n "$NAMESPACE" --for=condition=Ready kustomization/podinfo helmrelease/podinfo-helm --timeout=150s

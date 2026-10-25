@@ -1,0 +1,23 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+#@ load("/lib/flux.star", "enabled_components")
+
+#! All the controllers expose metrics in the Prometheus format on port 8080 (`/metrics`),
+#! and their Pods are annotated for Prometheus scraping in the upstream manifest.
+#! The log level and format are set via flags (see lib/flux.star).
+#! See: https://fluxcd.io/flux/monitoring/metrics/
+
+#@ if not data.values.observability.metrics.enabled:
+#@ for component in enabled_components():
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":component.deployment}})
+---
+spec:
+  template:
+    metadata:
+      annotations:
+        #@overlay/remove
+        prometheus.io/scrape:
+        #@overlay/remove
+        prometheus.io/port:
+#@ end
+#@ end

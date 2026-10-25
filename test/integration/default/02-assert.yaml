@@ -1,13 +1,15 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
+# The workloads applied by the kustomize controller and installed by the helm controller are running.
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: podinfo
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-  - reason: Succeeded
-    status: "True"
-    type: ArtifactInStorage
+  readyReplicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podinfo-helm
+status:
+  readyReplicas: 1

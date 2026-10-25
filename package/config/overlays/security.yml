@@ -1,0 +1,92 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("/lib/flux.star", "enabled_components")
+
+#! =============================================
+#! Pod Security Standards
+#! =============================================
+
+#! The controllers comply with the "restricted" Pod Security Standard, which upstream only warns about.
+#! It's enforced on the package namespace.
+#! See: https://fluxcd.io/flux/security/best-practices/#pod-security-standard-restricted
+
+#@overlay/match by=overlay.subset({"kind":"Namespace"})
+---
+metadata:
+  #@overlay/match missing_ok=True
+  labels:
+    #@overlay/match missing_ok=True
+    pod-security.kubernetes.io/enforce: restricted
+    #@overlay/match missing_ok=True
+    pod-security.kubernetes.io/audit: restricted
+    #@overlay/match missing_ok=True
+    pod-security.kubernetes.io/warn: restricted
+
+#! =============================================
+#! Service Account Tokens
+#! =============================================
+
+#! The ServiceAccounts auto-mount their tokens, so all the containers of a Pod would get one.
+#! Instead, the token is mounted explicitly in the controller container, with the same projected volume
+#! Kubernetes would otherwise add. All the controllers access the Kubernetes API.
+#! See: https://kyverno.io/policies/other/restrict-automount-sa-token/restrict-automount-sa-token/
+
+#@ kube_api_access = "kube-api-access"
+
+#@ for component in enabled_components():
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":component.deployment}})
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      automountServiceAccountToken: false
+      #@overlay/match missing_ok=True
+      volumes:
+      #@overlay/append
+      - name: #@ kube_api_access
+        projected:
+          defaultMode: 420
+          sources:
+          - serviceAccountToken:
+              path: token
+              expirationSeconds: 3607
+          - configMap:
+              name: kube-root-ca.crt
+              items:
+              - key: ca.crt
+                path: ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+      containers:
+      #@overlay/match by="name"
+      - name: manager
+        #@overlay/match missing_ok=True
+        volumeMounts:
+        #@overlay/append
+        - name: #@ kube_api_access
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+#@ end
+
+#! =============================================
+#! Priority
+#! =============================================
+
+#! Flux reconciles the cluster state, including the workloads it depends on, so all the controllers
+#! are scheduled before regular workloads. Upstream only sets it for some of them.
+#! The upstream `critical-pods` ResourceQuota allows this priority class in the package namespace.
+#! See: https://kubernetes.io/docs/concepts/policy/resource-quotas/#limit-priority-class-consumption-by-default
+
+#@ for component in enabled_components():
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":component.deployment}})
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      priorityClassName: system-cluster-critical
+#@ end

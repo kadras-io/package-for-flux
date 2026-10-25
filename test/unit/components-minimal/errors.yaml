@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helm-controller
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: helm-controller
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: helmreleases.helm.toolkit.fluxcd.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-controller
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-receiver
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: alerts.notification.toolkit.fluxcd.io
+---
+# The webhooks are served by the notification controller.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-webhooks
+---
+# The disabled controllers aren't granted any permissions.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+(subjects[?name == 'helm-controller'] | length(@)): 1
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+(subjects[?name == 'notification-controller'] | length(@)): 1

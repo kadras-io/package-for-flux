@@ -6,11 +6,11 @@ metadata:
   namespace: tests
 stringData:
   values.yaml: |
-    optional_components:
-      kustomize_controller: true
-      helm_controller: true
-      notification_controller: true
-      image_automation_controller: true
-      image_reflector_controller: true
+    image_reflector_controller:
+      enabled: true
+    image_automation_controller:
+      enabled: true
+    source_watcher:
+      enabled: true
     policies:
-      include: true
+      enabled: true

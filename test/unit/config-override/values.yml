@@ -1,0 +1,17 @@
+---
+source_controller:
+  args:
+    concurrent: 10
+    --requeue-dependency: 5s
+    # An upstream flag can be removed.
+    watch-all-namespaces: null
+kustomize_controller:
+  args:
+    no-cross-namespace-refs: true
+    no-remote-bases: true
+    default-service-account: default
+    # A computed flag can be overridden.
+    log-level: debug
+helm_controller:
+  args:
+    feature-gates: OOMWatch=true,AllowDNSLookups=true

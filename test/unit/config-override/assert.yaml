@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: source-controller
+spec:
+  template:
+    spec:
+      (containers[?name == 'manager'] | [0]):
+        (contains(args, '--concurrent=10')): true
+        (contains(args, '--requeue-dependency=5s')): true
+        (contains(args, '--watch-all-namespaces')): false
+        # The other upstream flags are kept.
+        (contains(args, '--enable-leader-election')): true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-controller
+spec:
+  template:
+    spec:
+      (containers[?name == 'manager'] | [0]):
+        (contains(args, '--no-cross-namespace-refs=true')): true
+        (contains(args, '--no-remote-bases=true')): true
+        (contains(args, '--default-service-account=default')): true
+        (args[?starts_with(@, '--log-level=')]): [--log-level=debug]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helm-controller
+spec:
+  template:
+    spec:
+      (containers[?name == 'manager'] | [0]):
+        (args[?starts_with(@, '--feature-gates=')]): ["--feature-gates=OOMWatch=true,AllowDNSLookups=true"]
+        (args[?starts_with(@, '--log-level=')]): [--log-level=info]

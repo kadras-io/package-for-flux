@@ -1,26 +1,36 @@
-# Controller
 ---
+# The source, kustomize, helm, and notification controllers are deployed by default.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: source-controller
   namespace: flux-system
-spec:
-  replicas: 1
 status:
-  readyReplicas: 1 
+  readyReplicas: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kustomize-controller
   namespace: flux-system
-spec:
-  replicas: 1
 status:
-  readyReplicas: 1 
-
-# Image Pull Secret
+  readyReplicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helm-controller
+  namespace: flux-system
+status:
+  readyReplicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-controller
+  namespace: flux-system
+status:
+  readyReplicas: 1
 ---
 apiVersion: v1
 kind: Secret

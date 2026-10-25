@@ -11,3 +11,29 @@ status:
   - reason: Succeeded
     status: "True"
     type: ArtifactInStorage
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: podinfo
+status:
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+  - reason: Succeeded
+    status: "True"
+    type: ArtifactInStorage
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: podinfo-chart
+status:
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+  - reason: Succeeded
+    status: "True"
+    type: ArtifactInStorage

@@ -1,0 +1,42 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+#@ load("/lib/flux.star", "enabled_components")
+
+#! The additional certificate authorities are mounted in a separate directory, listed in `SSL_CERT_DIR`.
+#! The controllers, written in Go, trust the certificates in that directory in addition to the system ones.
+#! A certificate authority can also be set per Flux resource, via `spec.certSecretRef`.
+#! See: https://pkg.go.dev/crypto/x509#SystemCertPool
+
+#@ if data.values.ca_cert_data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-ca-certificates
+  namespace: #@ data.values.namespace
+type: Opaque
+stringData:
+  ca.crt: #@ data.values.ca_cert_data
+
+#@ for component in enabled_components():
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":component.deployment}})
+---
+spec:
+  template:
+    spec:
+      containers:
+        #@overlay/match by="name"
+        - name: manager
+          env:
+          - name: SSL_CERT_DIR
+            value: /etc/ssl/certs-extra
+          volumeMounts:
+          - name: ca-certificates
+            mountPath: /etc/ssl/certs-extra
+            readOnly: true
+      volumes:
+      - name: ca-certificates
+        secret:
+          secretName: flux-ca-certificates
+#@ end
+#@ end

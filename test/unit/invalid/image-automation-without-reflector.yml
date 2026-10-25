@@ -1,0 +1,4 @@
+# expected: `image_reflector_controller.enabled` to be true when `image_automation_controller.enabled` is true
+---
+image_automation_controller:
+  enabled: true

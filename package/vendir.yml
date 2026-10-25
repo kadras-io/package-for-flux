@@ -1,13 +1,13 @@
 apiVersion: vendir.k14s.io/v1alpha1
+kind: Config
+minimumRequiredVersion: 0.32.0
 directories:
-- contents:
-  - githubRelease:
-      disableAutoChecksumValidation: true
+- path: config/upstream
+  contents:
+  - path: .
+    githubRelease:
       slug: fluxcd/flux2
       tag: v2.9.6
+      disableAutoChecksumValidation: true
     includePaths:
     - install.yaml
-    path: .
-  path: config/upstream
-kind: Config
-minimumRequiredVersion: ""

@@ -1,0 +1,5 @@
+---
+helm_controller:
+  enabled: false
+notification_controller:
+  enabled: false

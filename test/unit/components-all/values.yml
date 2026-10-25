@@ -1,0 +1,7 @@
+---
+image_reflector_controller:
+  enabled: true
+image_automation_controller:
+  enabled: true
+source_watcher:
+  enabled: true

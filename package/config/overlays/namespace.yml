@@ -1,0 +1,25 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#! Flux runs in the package namespace. The controllers read it from the `RUNTIME_NAMESPACE` environment variable,
+#! but the upstream manifest references it in the ClusterRoleBindings and in the address of the notification
+#! controller (`--events-addr`, see lib/flux.star).
+#! See: https://fluxcd.io/flux/installation/configuration/bootstrap-customization/
+
+#@ namespace = data.values.namespace
+
+#@overlay/match by=overlay.subset({"kind":"Namespace", "metadata":{"name":"flux-system"}})
+---
+metadata:
+  name: #@ namespace
+
+#@overlay/match by=overlay.subset({"metadata":{"namespace":"flux-system"}}), expects="1+"
+---
+metadata:
+  namespace: #@ namespace
+
+#@overlay/match by=overlay.subset({"kind":"ClusterRoleBinding"}), expects="1+"
+---
+subjects:
+#@overlay/match by=overlay.subset({"kind":"ServiceAccount"}), expects="1+"
+- namespace: #@ namespace

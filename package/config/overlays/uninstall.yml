@@ -1,0 +1,21 @@
+#@ load("@ytt:overlay", "overlay")
+
+#! The Flux resources have finalizers, handled by the controllers while they run: deleting a Kustomization
+#! or a HelmRelease deletes the workloads it applied. Deleting the CustomResourceDefinitions, or the namespace
+#! with the Flux resources in it, would delete them all, with all the workloads Flux manages.
+#! Instead, uninstalling the package keeps the CustomResourceDefinitions and the namespace, like `flux uninstall --keep-namespace`:
+#! the controllers are deleted, and the Flux resources and their workloads stay, waiting for the controllers to be installed again.
+#! The same applies when a controller is disabled. To remove the Flux resources too, use `flux uninstall` (see docs/upgrade.md).
+#! When the package is installed again, or a controller enabled again, kapp updates the resources it left behind
+#! instead of failing because they already exist.
+#! See: https://fluxcd.io/flux/installation/uninstall/ and https://carvel.dev/kapp/docs/latest/apply/
+
+#@overlay/match by=overlay.or_op(overlay.subset({"kind":"CustomResourceDefinition"}), overlay.subset({"kind":"Namespace"})), expects="1+"
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/delete-strategy: orphan
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/create-strategy: fallback-on-update

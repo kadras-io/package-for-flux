@@ -1,0 +1,20 @@
+apiVersion: policies.kyverno.io/v1
+kind: NamespacedImageValidatingPolicy
+metadata:
+  name: flux-verify-image
+  namespace: flux-system
+spec:
+  validationActions:
+  - Deny
+  matchImageReferences:
+  - glob: ghcr.io/fluxcd/*
+  - glob: docker.io/fluxcd/*
+  attestors:
+  - name: cosign
+    cosign:
+      keyless:
+        identities:
+        - issuer: https://token.actions.githubusercontent.com
+          subjectRegExp: ^https://github\.com/fluxcd/.*$
+      ctlog:
+        url: https://rekor.sigstore.dev
