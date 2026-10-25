@@ -1,15 +1,12 @@
 ---
-# The workloads applied by the kustomize controller and installed by the helm controller are running.
+# The workloads applied by the kustomize controller and installed by the helm controller exist.
+# Their health is checked by the Kustomization (`wait: true`) and the HelmRelease.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: podinfo
-status:
-  readyReplicas: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: podinfo-helm
-status:
-  readyReplicas: 1

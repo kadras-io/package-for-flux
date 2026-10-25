@@ -24,12 +24,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: podinfo
-status:
-  readyReplicas: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: podinfo-helm
-status:
-  readyReplicas: 1
