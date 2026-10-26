@@ -14,6 +14,32 @@ The service account tokens aren't auto-mounted. Each controller mounts a project
 
 The kustomize and helm controllers are bound to the `cluster-admin` ClusterRole, since they apply arbitrary resources. On shared clusters, make them impersonate a service account with fewer permissions in the namespace of each Flux resource, as described in [configuration.md](configuration.md#multi-tenancy-lockdown). See [contextual authorization](https://fluxcd.io/flux/security/contextual-authorization/).
 
+The other controllers can't create service account tokens. To use [object identity](https://fluxcd.io/flux/installation/configuration/object-identity/#kubernetes-credential-provider) with the `kubernetes` credential provider, bind a ClusterRole granting `create` on `serviceaccounts/token` to the ServiceAccount of each controller using it (source, notification, image reflector, or image automation controller).
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: flux-object-identity
+rules:
+  - apiGroups: [""]
+    resources: ["serviceaccounts/token"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flux-object-identity
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: flux-object-identity
+subjects:
+  - kind: ServiceAccount
+    name: source-controller
+    namespace: flux-system
+```
+
 The `flux-view` and `flux-edit` ClusterRoles aggregate the permissions on the Flux resources to the built-in `view`, `edit`, and `admin` ClusterRoles, so that the users can manage the Flux resources in their namespaces. The cluster-wide resources of the package are prefixed with `flux-`.
 
 ## Network policies
